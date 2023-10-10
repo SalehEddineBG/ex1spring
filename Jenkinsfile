@@ -5,7 +5,6 @@ pipeline {
     }
     stages {
         stage ("Clean up"){
-            
             steps {
                 deleteDir()
             }
@@ -26,18 +25,10 @@ pipeline {
         stage ("Run docker compose") {
             steps {
                  dir("exp1spring"){
-                    sh "docker compose up -d"
-                }                
-            }
-        }
-    }
-}
-        stage ("Run docker compose") {
-            steps {
-                 dir("exp1-spring"){
                     sh " docker compose up -d"
                 }                
             }
         }
     }
 }
+
