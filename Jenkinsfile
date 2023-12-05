@@ -20,7 +20,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir("exp1-spring") {
+                dir("ex1spring") {
                     sh "mvn clean install"
                 }
             }
@@ -29,7 +29,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonar-server') {
-                    dir("exp1-spring") {
+                    dir("ex1spring") {
                         sh 'mvn sonar:sonar'
                     }
                 }
