@@ -1,32 +1,38 @@
 pipeline {
-    agent any 
-    tools { 
+    agent any
+
+    tools {
         maven 'maven'
     }
+
     stages {
-        stage ("Clean up"){
+        stage("Clean up") {
             steps {
                 deleteDir()
             }
         }
-        stage ("Clone repo"){
+
+        stage("Clone repo") {
             steps {
-                sh "git clone https://github.com/SalehEddineBG/ex1spring"
+              sh "git clone https://github.com/SalehEddineBG/ex1spring.git"
             }
         }
-        stage ("Generate backend image") {
-              steps {
-                   dir("ex1spring"){
-                      sh "mvn clean install"
-                      sh "docker build -t docexp1-spring ."
-                  }                
-              }
-          }
-        stage ("Run docker compose") {
+
+        stage('Build') {
             steps {
-                 dir("exp1spring"){
-                    sh " docker compose up -d"
-                }                
+                dir("exp1-spring") {
+                    sh "mvn clean install"
+                }
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sonar-server') {
+                    dir("exp1-spring") {
+                        sh 'mvn sonar:sonar'
+                    }
+                }
             }
         }
     }
